@@ -13,6 +13,3 @@ How does Change in Speed result in Change of Direction of Light https://www.yout
 
 n1/n2=sina1/sina2
 其中,n1/n2是光在两种介质中的折射率的比值,a1是入射角,a2是折射角      https://www.zybang.com/question/01dccdae0f933f8d40cc41203d32d9d6.html       
-
-sin => Math.sin(30 * Math.PI / 180) // 0.5                      http://c.biancheng.net/ref/sin.html
-asin => Math.asin(0.665)*180/Math.PI // 41.6823                 https://www.runoob.com/cprogramming/c-function-asin.html
