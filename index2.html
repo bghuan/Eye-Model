@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>光线经过离开圆形介质折射模型</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="1500" height="950" style="background:#FFF;border:#000 1px solid"></canvas>
+</body>
+<script src="./config.js"></script>
+<script>
+    var width0 = document.documentElement.clientWidth
+    var height0 = document.documentElement.clientHeight
+    var canvas = document.getElementById("canvas")
+    var line = canvas.getContext("2d")
+    var circle = new Circle(800, 500, 300)
+    init()
+    canvas.onmousemove = function(e) {
+        let width = 1500
+        clean()
+
+        let points = []
+        points[0] = new Point(0, 500)
+        points[1] = new Point(e.layerX, e.layerY)
+        points[1] = endPoint(points[0], points[1], width)
+
+        let _points = getCirclePoint(points[0], points[1], circle)
+        if (!_points[0].isBlank()) {
+            points[1] = _points[0]
+
+            let angle = angleByCirclePoint(points[1], circle)
+            points[2] = nextPoint2(points[0], points[1], angle, 600)
+
+            // _points = getCirclePoint(points[1], points[2], circle)
+            // if (!_points[1].isBlank()) points[2] = _points[1]
+
+            // angle = angleByCirclePoint(points[2], circle)
+            //     // cl(angle)
+            // points[3] = nextPoint3(points[1], points[2], angle, 600, true)
+        }
+        drwaLine(points, line)
+    }
+
+    function nextPoint2(pointA, pointB, angle, length, flag) {
+        let angle1 = getAngle(pointA, pointB) - (90 - angle)
+        let angle2 = flag ? faster(angle1) : slow(angle1)
+        cl(angle1, angle2)
+        let ac = getAC(length, angle2)
+        return new Point(pointB.x + length, pointB.y + ac.a)
+    }
+
+    function nextPoint3(pointA, pointB, angle, length, flag) {
+        let angle1 = getAngle(pointA, pointB) - (90 - Math.abs(angle))
+        let angle2 = flag ? faster(angle1) : slow(angle1)
+        let ac = getAC(length, angle2)
+        return new Point(pointB.x + length, pointB.y + ac.a)
+    }
+
+    function angleByCirclePoint(point, circle) {
+        let k1 = (point.x - circle.x) / (point.y - circle.y)
+        return angleBySlope(k1)
+    }
+
+    function init() {
+        clean()
+        line.moveTo(0, 500)
+        line.lineTo(1500, 500)
+        line.stroke()
+    }
+
+    function clean() {
+        line.clearRect(0, 0, 1500, 1500)
+        line.beginPath();
+        line.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
+        line.stroke()
+        line.beginPath();
+        line.arc(circle.x, circle.y, 0.5, 0, 2 * Math.PI);
+        line.stroke()
+    }
+</script>
+
+</html>

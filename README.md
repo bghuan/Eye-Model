@@ -13,3 +13,10 @@ How does Change in Speed result in Change of Direction of Light https://www.yout
 
 n1/n2=sina1/sina2
 其中,n1/n2是光在两种介质中的折射率的比值,a1是入射角,a2是折射角      https://www.zybang.com/question/01dccdae0f933f8d40cc41203d32d9d6.html       
+y/x=k,y/x(线)*k(圆)=-1,k=x/y
+
+1. 光在平面介质中的折射             √
+2. 光在曲面介质中的折射
+3. 光在多角度成像点的唯一确定
+4. 光的成像
+5. 光的成像清晰
