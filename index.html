@@ -21,7 +21,7 @@
     line.lineTo(1500, height0 / 2)
     line.stroke()
 
-    canvas.onmousemove = function(e) {
+    canvas.onmousemove = function (e) {
         let width = 500
         if (e.layerX > width + 50) return
         clean()
@@ -34,7 +34,7 @@
         drwaLine(points, line)
     }
 
-    function clean() {
+    function _clean() {
         line.clearRect(0, 0, 500, 1000)
         line.fillRect(500, 0, 500, 1000)
         line.clearRect(1000, 0, 500, 1000)

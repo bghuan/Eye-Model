@@ -15,9 +15,10 @@
     var height0 = document.documentElement.clientHeight
     var canvas = document.getElementById("canvas")
     var line = canvas.getContext("2d")
+    line.fillStyle = "#CCFFFF"
     var circle = new Circle(800, 500, 300)
     init()
-    canvas.onmousemove = function(e) {
+    canvas.onmousemove = function (e) {
         let width = 1500
         clean()
 
@@ -31,36 +32,15 @@
             points[1] = _points[0]
 
             let angle = angleByCirclePoint(points[1], circle)
-            points[2] = nextPoint2(points[0], points[1], angle, 600)
+            points[2] = nextPoint(points[0], points[1], 600, false, angle)
 
-            // _points = getCirclePoint(points[1], points[2], circle)
-            // if (!_points[1].isBlank()) points[2] = _points[1]
+            _points = getCirclePoint(points[1], points[2], circle)
+            if (!_points[1].isBlank()) points[2] = _points[1]
 
-            // angle = angleByCirclePoint(points[2], circle)
-            //     // cl(angle)
-            // points[3] = nextPoint3(points[1], points[2], angle, 600, true)
+            angle = angleByCirclePoint(points[2], circle)
+            points[3] = nextPoint(points[1], points[2], 600, true, angle)
         }
         drwaLine(points, line)
-    }
-
-    function nextPoint2(pointA, pointB, angle, length, flag) {
-        let angle1 = getAngle(pointA, pointB) - (90 - angle)
-        let angle2 = flag ? faster(angle1) : slow(angle1)
-        cl(angle1, angle2)
-        let ac = getAC(length, angle2)
-        return new Point(pointB.x + length, pointB.y + ac.a)
-    }
-
-    function nextPoint3(pointA, pointB, angle, length, flag) {
-        let angle1 = getAngle(pointA, pointB) - (90 - Math.abs(angle))
-        let angle2 = flag ? faster(angle1) : slow(angle1)
-        let ac = getAC(length, angle2)
-        return new Point(pointB.x + length, pointB.y + ac.a)
-    }
-
-    function angleByCirclePoint(point, circle) {
-        let k1 = (point.x - circle.x) / (point.y - circle.y)
-        return angleBySlope(k1)
     }
 
     function init() {
@@ -70,10 +50,11 @@
         line.stroke()
     }
 
-    function clean() {
+    function _clean() {
         line.clearRect(0, 0, 1500, 1500)
         line.beginPath();
         line.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI);
+        line.fill()
         line.stroke()
         line.beginPath();
         line.arc(circle.x, circle.y, 0.5, 0, 2 * Math.PI);
