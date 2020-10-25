@@ -7,6 +7,7 @@
 // 41
 const n1 = 1
 // const n2 = 1.33
+// 调试使用高对比度
 const n2 = 2
 const faster = (angle) => {
     let s = Math.sin(angle * Math.PI / 180) * n2 / n1
@@ -16,10 +17,6 @@ const slow = (angle) => {
     let s = Math.sin(angle * Math.PI / 180) * n1 / n2
     return angle2 = Math.asin(s) * 180 / Math.PI
 }
-
-// console.log(faster(30))
-// console.log(slow(30))
-// console.log(faster(slow(30)))
 
 let cl = console.log
 
@@ -43,13 +40,14 @@ Circle.prototype.center = function () {
     return new Point(this.x, this.y)
 }
 
-//已知起点终点求角度
+// 已知起点终点求角度
 function getAngle(start, end) {
     var diff_x = end.x - start.x,
         diff_y = end.y - start.y;
     return 360 * Math.atan(diff_y / diff_x) / (2 * Math.PI);
 }
-//已知角度和直角边,求斜边c,对边a
+
+// 已知角度和直角边,求斜边c,对边a
 function getAC(b, angle) {
     var radian = 2 * Math.PI / 360 * angle;
     return {
@@ -57,11 +55,12 @@ function getAC(b, angle) {
         a: b * Math.tan(radian)
     }
 }
-//斜率转角度
+// 斜率转角度
 function angleBySlope(slope) {
     return 360 * Math.atan(slope) / (2 * Math.PI)
 }
 
+// 连线
 function drwaLine(points, line) {
     line.moveTo(points[0].x, points[0].y)
     for (let i = 1; i < points.length; i++) {
@@ -70,22 +69,15 @@ function drwaLine(points, line) {
     }
 }
 
-// function nextPoint(pointA, pointB, length, flag) {
-//     let angle1 = getAngle(pointA, pointB)
-//     let angle2 = flag ? faster(angle1) : slow(angle1)
-//     let ac = getAC(length, angle2)
-//     return new Point(pointB.x + length, pointB.y + ac.a)
-// }
-
 function nextPoint(pointA, pointB, length, flag = false, angle = 0) {
-    let angle1 = getAngle(pointA, pointB) - angle
-    let angle2 = flag ? faster(angle1) : slow(angle1)
-    // cl(getAngle(pointA, pointB), -angle,angle1,angle2,angle2 + angle)
-    angle2 = angle2 + angle
+    let angle1 = getAngle(pointA, pointB) + angle // 以切线为y轴，得出假倾角
+    let angle2 = flag ? faster(angle1) : slow(angle1)  // 得出折射角度
+    angle2 = angle2 - angle // 恢复真实倾角
     let ac = getAC(length, angle2)
     return new Point(pointB.x + length, pointB.y + ac.a)
 }
 
+// 延长两点连线，待合并至nextPoint(无折射率)
 function endPoint(pointA, pointB, length) {
     let angle1 = getAngle(pointA, pointB)
     let ac = getAC(length, angle1)
@@ -110,12 +102,12 @@ function getCirclePoint(pointA, pointB, circle) {
 
 // 圆上某点的斜率倾角
 function angleByCirclePoint(point, circle) {
-    let k1 = (point.y - circle.y) / (point.x - circle.x)
+    let k1 = (circle.y - point.y) / (point.x - circle.x)
     return angleBySlope(k1)
 }
 
-let isClean = false
 // 继承是否保留痕迹
+let isClean = false
 function clean() {
     if (isClean) return
     _clean()
